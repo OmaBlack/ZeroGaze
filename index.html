@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZeroGaze - Digital Wellbeing</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app" class="app-layout">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="brand">
+          <div class="logo-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>ZeroGaze</h1>
+            <span class="version-tag">On-Device Ergonomic Guard</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-status-group">
+            <div id="distance-pill" class="posture-pill posture-aligned" title="Viewing Distance: ~60 cm (Optimal)">
+              <span class="posture-dot"></span>
+              <span id="distance-label">~60 cm</span>
+            </div>
+            <div id="posture-pill" class="posture-pill posture-aligned" title="Desk Posture: Aligned">
+              <span class="posture-dot"></span>
+              <span id="posture-label">Aligned</span>
+            </div>
+            <div id="status-pill" class="status-pill status-initializing">
+              <span class="status-dot"></span>
+              <span id="status-label">Initializing</span>
+            </div>
+          </div>
+          <div class="header-actions-group">
+            <button id="btn-toggle-pause" class="btn-icon" title="Pause / Resume Tracking">
+              <svg id="icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+              <svg id="icon-play" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+            </button>
+            <button id="btn-toggle-dnd" class="btn-icon" title="Presentation / DND Mode (Defers breaks)">
+              <span id="dnd-icon" class="icon-wrap">
+                <svg id="icon-bell-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </svg>
+                <svg id="icon-bell-off" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8.7 3A6 6 0 0 1 18 8a21.3 21.3 0 0 0 .6 5" />
+                  <path d="M17 17H3s3-2 3-9a4.67 4.67 0 0 1 .3-1.7" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                  <line x1="2" y1="2" x2="22" y2="22" />
+                </svg>
+              </span>
+            </button>
+            <button id="btn-open-settings" class="btn-icon" title="Settings & Privacy">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Console -->
+      <main class="main-content">
+        <div class="console-grid">
+          <!-- Primary Left Column: Cadence Console, Telemetry Strip, & Habit History -->
+          <div class="console-primary">
+            <!-- Hero Card: Active Session & Optical Cadence Horizon -->
+            <section class="card hero-card">
+              <div class="hero-top">
+                <div class="hero-title">
+                  <div class="timer-display" id="session-timer">00:00:00</div>
+                  <h2 class="hero-session-heading">Current Focus Session</h2>
+                </div>
+                <div class="hero-actions">
+                  <button id="btn-take-break" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                      <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                      <line x1="6" y1="1" x2="6" y2="4" />
+                      <line x1="10" y1="1" x2="10" y2="4" />
+                      <line x1="14" y1="1" x2="14" y2="4" />
+                    </svg>
+                    Take Break Now
+                  </button>
+                </div>
+              </div>
+
+              <!-- Signature Optical Cadence Horizon Bar (with 20m / 40m micro-break ticks) -->
+              <div class="progress-container">
+                <div class="progress-labels">
+                  <span id="progress-text">Focus interval: 0m / 50m</span>
+                  <span id="progress-pct">0%</span>
+                </div>
+                <div class="cadence-horizon">
+                  <div class="progress-track">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+                  </div>
+                  <div class="cadence-ticks" aria-hidden="true">
+                    <span class="cadence-tick" style="inset-inline-start: 40%" title="20-20-20 Eye Rest Checkpoint (40%)"></span>
+                    <span class="cadence-tick" style="inset-inline-start: 80%" title="20-20-20 Eye Rest Checkpoint (80%)"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grace period banner (hidden until grace is active) -->
+              <div id="grace-banner" class="grace-banner hidden">
+                <div class="grace-content">
+                  <svg class="warning-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                  <span id="grace-text">Presence lost. Grace period: 60s remaining before pausing.</span>
+                </div>
+              </div>
+
+              <!-- Ergonomic Alert Banner (Loud visual warning for too close / bad posture) -->
+              <div id="ergo-alert-banner" class="ergo-alert-banner hidden" role="alert">
+                <div class="ergo-alert-content">
+                  <svg class="ergo-alert-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                  <div class="ergo-alert-body">
+                    <strong id="ergo-alert-title">Ergonomic Alert</strong>
+                    <span id="ergo-alert-text">Sit upright and adjust distance.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Stats Strip -->
+            <section class="stats-grid" aria-label="Today's Wellbeing Telemetry">
+              <div class="stat-cell">
+                <span class="stat-label">Active Time Today</span>
+                <div class="stat-value" id="stat-active-today">0h 0m</div>
+                <span class="stat-sub" id="stat-present-today">Present: 0m 0s • Screen engaged</span>
+              </div>
+
+              <div class="stat-cell">
+                <span class="stat-label">Break Compliance</span>
+                <div class="stat-value" id="stat-compliance">100%</div>
+                <span class="stat-sub" id="stat-breaks-count">0 taken • 0 skipped</span>
+              </div>
+
+              <div class="stat-cell">
+                <span class="stat-label">Presence Sensor</span>
+                <div class="stat-value cv-indicator" id="stat-cv-status">
+                  <span class="cv-badge" id="cv-badge">Detecting...</span>
+                </div>
+                <span class="stat-sub" id="stat-cv-conf">Confidence: 0%</span>
+                <div id="stat-battery-pill" class="battery-pill hidden">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="7" width="16" height="10" rx="2" ry="2" />
+                    <line x1="22" y1="11" x2="22" y2="13" />
+                  </svg>
+                  <span id="battery-status-text">Battery Saver (0.5 FPS)</span>
+                </div>
+              </div>
+
+              <div class="stat-cell">
+                <span class="stat-label">Tracking Mode</span>
+                <div class="stat-value text-accent" id="stat-mode">Auto (CV)</div>
+                <span class="stat-sub">Local MediaPipe detector</span>
+              </div>
+            </section>
+
+            <!-- 7-Day Habit & Compliance Trends -->
+            <section class="card trends-card">
+              <div class="trends-header">
+                <div class="trends-title">
+                  <h2 class="section-heading" id="trends-range-label">Focus &amp; Break Compliance</h2>
+                  <span id="streak-badge" class="streak-badge">1 Day Streak</span>
+                </div>
+                <div class="trends-legend">
+                  <span class="legend-item"><span class="legend-swatch active-swatch"></span> Active Hours</span>
+                  <span class="legend-item"><span class="legend-swatch break-swatch"></span> Compliance %</span>
+                  <div class="trends-range-toggle">
+                    <button type="button" id="btn-range-7d" class="btn-preset active" data-days="7">7D</button>
+                    <button type="button" id="btn-range-30d" class="btn-preset" data-days="30">30D</button>
+                  </div>
+                </div>
+              </div>
+              <div class="chart-container" id="chart-container">
+                <svg id="trend-chart" width="100%" height="120" viewBox="0 0 600 110" preserveAspectRatio="none">
+                  <!-- Dynamic bars injected here -->
+                </svg>
+              </div>
+              <div class="trends-footer" id="trends-footer-labels">
+                <!-- 7 day date labels -->
+              </div>
+              <div class="recent-sessions-wrap">
+                <h3 class="subsection-heading">Recent Completed Focus Sessions</h3>
+                <div id="recent-sessions-list" class="recent-sessions-list">
+                  <span class="text-dim text-sm">Complete a focus session or break to see session logs.</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Secondary Right Rail: Live Optical Sensor Calibration & On-Device Guarantee -->
+          <aside class="console-rail" aria-label="Optical Sensor &amp; Privacy Rail">
+            <section class="card diagnostics-card">
+              <div class="card-header-toggle" id="toggle-preview">
+                <div class="card-header-title">
+                  <svg class="header-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                    <circle cx="12" cy="13" r="3" />
+                  </svg>
+                  <h3>Camera Calibration</h3>
+                </div>
+                <button class="btn btn-sm btn-ghost" id="preview-toggle-btn">Show Preview</button>
+              </div>
+
+              <div id="preview-container" class="preview-container hidden">
+                <div class="video-wrapper">
+                  <video id="webcam" autoplay playsinline muted></video>
+                  <canvas id="canvas-overlay"></canvas>
+                </div>
+                <div class="preview-info">
+                  <p class="text-muted text-sm">
+                    Processed strictly in local RAM at 2 FPS. Raw frames are destroyed immediately after presence scoring.
+                  </p>
+                  <div class="preview-metrics">
+                    <span>Polling: <strong>2 FPS</strong></span>
+                    <span>Model: <strong>MediaPipe BlazeFace</strong></span>
+                    <span id="cam-resolution">Resolution: Loading...</span>
+                  </div>
+                  <div class="camera-select-row">
+                    <label for="preview-camera-select">Source:</label>
+                    <select id="preview-camera-select" class="preview-camera-select">
+                      <option value="">Default Camera</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="card privacy-card">
+              <div class="privacy-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              </div>
+              <div class="privacy-text">
+                <h4>100% On-Device &amp; Zero Cloud</h4>
+                <p>
+                  Presence and ergonomic distance are computed locally in memory. Zero cloud servers, zero accounts, and zero image storage.
+                </p>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <!-- Break Prompt Modal / Banner (When BreakPrompt state is reached) -->
+        <div id="break-modal" class="break-modal hidden">
+          <div class="modal-card">
+            <div class="modal-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                <line x1="6" y1="1" x2="6" y2="4" />
+                <line x1="10" y1="1" x2="10" y2="4" />
+                <line x1="14" y1="1" x2="14" y2="4" />
+              </svg>
+            </div>
+            <h2>Time for a Break</h2>
+            <p>You've completed your focus interval. Step away, rest your eyes, and stretch.</p>
+            <div class="modal-buttons">
+              <button id="btn-finish-break" class="btn btn-primary modal-primary-btn">Start Break Mode</button>
+              <div class="modal-secondary-actions">
+                <button id="btn-wrap-up-break" class="btn btn-secondary">Wrap Up (2m)</button>
+                <button id="btn-snooze-break" class="btn btn-secondary">Snooze (5m)</button>
+                <button id="btn-skip-break" class="btn btn-ghost">Skip Break</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Break Mode Overlay (When BreakMode is active) -->
+        <div id="break-mode-overlay" class="break-mode-overlay hidden">
+          <div class="break-mode-card">
+            <h2 id="break-mode-timer">00:00</h2>
+            <div class="break-badge">Break in Progress</div>
+            <div id="break-away-pill" class="posture-pill posture-aligned">
+              <span class="posture-dot"></span>
+              <span id="break-away-label">Step away from screen for full recovery</span>
+            </div>
+            <div class="breathing-coach-wrap">
+              <div id="breathing-orb" class="breathing-orb breath-inhale">
+                <span id="breathing-phase-text">Inhale (4s)</span>
+              </div>
+              <div class="stretch-coach-card">
+                <strong id="stretch-coach-title">20-20-20 Far Gaze</strong>
+                <p id="stretch-coach-instruction" class="break-guidance">
+                  Focus on a distant object at least 20 feet (6 meters) away to relax ciliary eye muscles.
+                </p>
+              </div>
+            </div>
+            <div class="break-progress-wrap">
+              <div id="break-mode-progress-bar" class="break-mode-progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="break-actions">
+              <button id="btn-end-break-early" class="btn btn-secondary">End Break Early</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 20-20-20 Micro-Break Ambient Toast -->
+        <div id="micro-break-toast" class="micro-break-toast hidden" role="alert" aria-live="polite">
+          <div class="micro-toast-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <div class="micro-toast-body">
+            <strong>20-20-20 Eye Rest</strong>
+            <p>Look at an object 20 feet away (<span id="micro-timer">20s</span>)</p>
+            <div class="eye-exercise-track">
+              <div id="eye-pursuit-dot" class="eye-pursuit-dot"></div>
+            </div>
+          </div>
+          <button id="btn-dismiss-micro" class="btn-micro-dismiss" aria-label="Dismiss micro-break" title="Dismiss micro-break">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Settings & Preferences Modal -->
+        <div id="settings-modal" class="modal-backdrop hidden">
+          <div class="settings-card">
+            <div class="modal-header">
+              <h3>Preferences &amp; Privacy</h3>
+              <button id="btn-close-settings" class="btn-icon" aria-label="Close settings" title="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div class="settings-body">
+              <div class="settings-group">
+                <h4 class="settings-section-title">Focus Cadence &amp; Rest Limits</h4>
+                <div class="setting-item rhythm-presets-wrap">
+                  <label>Focus Cadence Presets</label>
+                  <div class="preset-pill-group">
+                    <button type="button" class="btn-preset active" data-work="50" data-break="10">50/10 Standard</button>
+                    <button type="button" class="btn-preset" data-work="25" data-break="5">25/5 Pomodoro</button>
+                    <button type="button" class="btn-preset" data-work="90" data-break="20">90/20 Ultradian</button>
+                  </div>
+                </div>
+                <div class="setting-item">
+                  <label for="setting-work-interval">Focus Interval (minutes)</label>
+                  <input type="number" id="setting-work-interval" min="5" max="180" value="50" />
+                </div>
+                <div class="setting-item">
+                  <label for="setting-break-interval">Break Duration (minutes)</label>
+                  <input type="number" id="setting-break-interval" min="1" max="60" value="10" />
+                </div>
+                <div class="setting-item">
+                  <label for="setting-grace-period">Grace Period (seconds)</label>
+                  <input type="number" id="setting-grace-period" min="10" max="300" value="60" />
+                </div>
+                <div class="setting-item">
+                  <label for="setting-snooze-limit">Max Snoozes per Break</label>
+                  <input type="number" id="setting-snooze-limit" min="0" max="10" value="2" />
+                </div>
+                <div class="setting-item">
+                  <label for="setting-skip-limit">Daily Skip Limit</label>
+                  <input type="number" id="setting-skip-limit" min="0" max="10" value="2" />
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <h4 class="settings-section-title">Vision Sensor, Ergonomics &amp; Identity Guard</h4>
+                <div class="setting-item">
+                  <label for="setting-tracking-mode">Tracking Mode</label>
+                  <select id="setting-tracking-mode">
+                    <option value="Auto">Auto (Webcam with Input Fallback)</option>
+                    <option value="Webcam only">Webcam only</option>
+                    <option value="Input only">Input only (Mouse &amp; Keyboard)</option>
+                  </select>
+                </div>
+                <div class="setting-item">
+                  <label for="setting-camera-select">Camera Source</label>
+                  <select id="setting-camera-select">
+                    <option value="">Default Camera</option>
+                  </select>
+                </div>
+                <div class="setting-item">
+                  <label for="setting-min-face-ratio">Background Face Filter</label>
+                  <select id="setting-min-face-ratio">
+                    <option value="0.12">Standard (Ignore far background &gt;1.2m)</option>
+                    <option value="0.18">Strict (Close desk user only)</option>
+                    <option value="0.08">Relaxed (Allow wider desk distance)</option>
+                  </select>
+                </div>
+                <div class="setting-item">
+                  <label for="setting-cv-fps">Camera Polling Rate (FPS)</label>
+                  <select id="setting-cv-fps">
+                    <option value="1">1 FPS (Ultra Low Power)</option>
+                    <option value="2" selected>2 FPS (Recommended Default)</option>
+                    <option value="3">3 FPS (Responsive)</option>
+                    <option value="5">5 FPS (High Precision)</option>
+                  </select>
+                </div>
+                <div class="setting-item setting-item-stacked">
+                  <div class="setting-row-top">
+                    <label>Posture &amp; Distance Baseline (~60 cm)</label>
+                    <button type="button" id="btn-calibrate-posture" class="btn btn-secondary btn-sm">Calibrate Posture &amp; Distance</button>
+                  </div>
+                  <span id="posture-calibrate-status" class="setting-status-note">Auto-calibrates on upright desk presence (~60 cm reference)</span>
+                </div>
+                <div class="setting-item setting-item-stacked">
+                  <div class="setting-row-top">
+                    <div>
+                      <label for="setting-screen-preset">Display Size &amp; Comfort Distance</label>
+                      <div class="text-xs text-muted" id="screen-detected-note">Detecting display...</div>
+                    </div>
+                    <div class="comfort-distance-input-row">
+                      <select id="setting-screen-preset">
+                        <option value="compact_laptop">13"–14" Laptop (~50 cm)</option>
+                        <option value="standard_laptop">15"–16" Laptop (~55 cm)</option>
+                        <option value="desktop_monitor" selected>24"–27" Desktop (~65 cm)</option>
+                        <option value="large_ultrawide">32"+ / Ultrawide (~75 cm)</option>
+                        <option value="custom">Custom Distance</option>
+                      </select>
+                      <div class="comfort-num-wrap">
+                        <input type="number" id="setting-comfort-distance" min="40" max="100" step="5" value="65" />
+                        <span class="comfort-unit">cm</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="distance-recommendation-bar">
+                    <span id="comfort-recommendation-text" class="setting-status-note">Recommended: ~65 cm based on standard 24"–27" desktop display (safe min: 50 cm).</span>
+                    <button type="button" id="btn-apply-recommended-distance" class="btn btn-ghost btn-xs">Apply Recommended</button>
+                  </div>
+                </div>
+                <div class="setting-item setting-item-stacked">
+                  <div class="setting-row-top">
+                    <label>Primary User Identity Guard</label>
+                    <div class="preset-pill-group">
+                      <button type="button" id="btn-enroll-face" class="btn btn-secondary btn-sm">Enroll My Face</button>
+                      <button type="button" id="btn-clear-face" class="btn btn-ghost btn-sm">Clear ID</button>
+                    </div>
+                  </div>
+                  <span id="face-enroll-status" class="setting-status-note">Not enrolled — any foreground face is tracked</span>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-lock-unrecognized">Unauthorized User Lock</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-lock-unrecognized" />
+                    <label for="setting-lock-unrecognized" class="checkbox-label">Lock PC if an unrecognized face sits at the screen (3s)</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <h4 class="settings-section-title">Experience, Accessibility &amp; System</h4>
+                <div class="setting-item">
+                  <label for="setting-break-overlay">Break Overlay Style</label>
+                  <select id="setting-break-overlay">
+                    <option value="full-screen">Full-Screen Rest Overlay</option>
+                    <option value="centered">Compact Centered Card</option>
+                  </select>
+                </div>
+                <div class="setting-item">
+                  <label for="setting-data-retention">Local Data Retention</label>
+                  <select id="setting-data-retention">
+                    <option value="30">30 Days</option>
+                    <option value="90">90 Days</option>
+                    <option value="365" selected>365 Days (1 Year)</option>
+                    <option value="3650">Indefinite (10 Years)</option>
+                  </select>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-sound">Break Chimes</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-sound" checked />
+                    <label for="setting-sound" class="checkbox-label">Play gentle chime on break prompt &amp; completion</label>
+                  </div>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-posture-alert-sound">Ergonomic Audio Alerts</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-posture-alert-sound" checked />
+                    <label for="setting-posture-alert-sound" class="checkbox-label">Play loud alert tone when sitting too close or slouching</label>
+                  </div>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-notifications">Desktop Notifications</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-notifications" checked />
+                    <label for="setting-notifications" class="checkbox-label">Show native OS notifications for break prompts and completions</label>
+                  </div>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-micro-notifications">20-20-20 Eye-Rest Alerts</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-micro-notifications" checked />
+                    <label for="setting-micro-notifications" class="checkbox-label">Notify when 20-minute eye-rest interval is reached</label>
+                  </div>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-tray-alerts">System Tray Badges &amp; Alerts</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-tray-alerts" checked />
+                    <label for="setting-tray-alerts" class="checkbox-label">Display live countdown, eye-rest timer, and alert badges in menu bar</label>
+                  </div>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-ergo-tray-alerts">Ergonomic Posture &amp; Distance Tray Alerts</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-ergo-tray-alerts" checked />
+                    <label for="setting-ergo-tray-alerts" class="checkbox-label">Display "⚠️ Move Back!" and "⚠️ Sit Up!" badges in menu bar during poor posture</label>
+                  </div>
+                </div>
+                <div class="setting-item setting-item-stacked">
+                  <div class="setting-row-top">
+                    <label>Notification Verification</label>
+                    <button type="button" id="btn-test-notification" class="btn btn-secondary btn-sm">Send Test Alert</button>
+                  </div>
+                  <span id="notification-permission-status" class="setting-status-note">Checking system notification permission...</span>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-reduced-motion">Reduced Motion</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-reduced-motion" />
+                    <label for="setting-reduced-motion" class="checkbox-label">Disable ambient animations and pulsing effects</label>
+                  </div>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-high-contrast">High Contrast Mode</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-high-contrast" />
+                    <label for="setting-high-contrast" class="checkbox-label">Increase border and text contrast (WCAG AAA)</label>
+                  </div>
+                </div>
+                <div class="setting-item checkbox-item">
+                  <label for="setting-autostart">System Startup</label>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="setting-autostart" />
+                    <label for="setting-autostart" class="checkbox-label">Launch ZeroGaze on system login</label>
+                  </div>
+                </div>
+                <div class="setting-item shortcuts-card">
+                  <label>Global Shortcuts</label>
+                  <div class="shortcut-list">
+                    <div class="shortcut-row"><span>Take Break Now</span><kbd>⌘/Ctrl + Shift + B</kbd></div>
+                    <div class="shortcut-row"><span>Pause / Resume</span><kbd>⌘/Ctrl + Shift + P</kbd></div>
+                    <div class="shortcut-row"><span>Toggle DND</span><kbd>⌘/Ctrl + Shift + D</kbd></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-data-zone">
+                <h4>Local Data Portability</h4>
+                <p class="text-sm text-dim">Export complete session, break, and compliance logs.</p>
+                <div class="export-buttons-row">
+                  <button id="btn-export-json" class="btn btn-secondary btn-sm">Export JSON</button>
+                  <button id="btn-export-csv" class="btn btn-secondary btn-sm">Export CSV</button>
+                  <button id="btn-export-report-card" class="btn btn-secondary btn-sm">Export Ergonomic Report</button>
+                  <button type="button" id="btn-import-json" class="btn btn-secondary btn-sm">Import JSON</button>
+                  <input type="file" id="input-import-json" accept="application/json,.json" class="hidden" />
+                </div>
+              </div>
+
+              <div class="settings-danger-zone">
+                <h4>Local Data Management</h4>
+                <p class="text-sm text-dim">All logs and statistics are stored locally on your machine.</p>
+                <button id="btn-delete-all-data" class="btn btn-danger">Delete All Local Data</button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="btn-open-privacy-guide" class="btn btn-secondary">View Privacy &amp; Setup Guide</button>
+              <button id="btn-save-settings" class="btn btn-primary">Save Preferences</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- First-Run Onboarding & Privacy Explainer Modal -->
+        <div id="onboarding-modal" class="modal-backdrop hidden" role="dialog" aria-labelledby="onboarding-title">
+          <div class="settings-card onboarding-card">
+            <div class="modal-header">
+              <h3 id="onboarding-title">Welcome to ZeroGaze • Privacy &amp; Setup</h3>
+              <button id="btn-close-onboarding" class="btn-icon" aria-label="Close onboarding" title="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div class="settings-body">
+              <div class="onboarding-privacy-banner">
+                <strong>100% On-Device Privacy Guarantee</strong>
+                <p class="text-sm text-dim">
+                  ZeroGaze processes presence locally in RAM at 2 FPS using MediaPipe BlazeFace. Raw video frames are immediately discarded, never written to disk, and never transmitted over any network.
+                </p>
+              </div>
+              <div class="settings-group">
+                <div class="setting-item">
+                  <label>Live Presence &amp; ~60 cm Distance Check</label>
+                  <span id="onboarding-cv-status" class="cv-badge">Checking camera...</span>
+                </div>
+                <div class="setting-item">
+                  <label>Prefer not to use a webcam?</label>
+                  <button type="button" id="btn-onboarding-input-only" class="btn btn-secondary btn-sm">Use Mouse &amp; Keyboard Only</button>
+                </div>
+              </div>
+              <div class="settings-group">
+                <div class="setting-item rhythm-presets-wrap">
+                  <label>Choose Your Focus Rhythm</label>
+                  <div class="preset-pill-group">
+                    <button type="button" class="btn-onboarding-preset btn-preset active" data-work="50" data-break="10">50/10 Standard</button>
+                    <button type="button" class="btn-onboarding-preset btn-preset" data-work="25" data-break="5">25/5 Pomodoro</button>
+                    <button type="button" class="btn-onboarding-preset btn-preset" data-work="90" data-break="20">90/20 Ultradian</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="btn-complete-onboarding" class="btn btn-primary">Calibrate &amp; Start ZeroGaze</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

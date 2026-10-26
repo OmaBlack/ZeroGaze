@@ -1,0 +1,79 @@
+# FocusGaze Privacy Policy (Microsoft Store Edition)
+
+**Last Updated:** October 26, 2026  
+**Effective Date:** October 26, 2026  
+**App Name:** FocusGaze  
+**Publisher / Developer:** FocusGaze Project  
+**Contact:** privacy@focusgaze.local  
+
+---
+
+## 1. Overview and Core Privacy Commitment
+FocusGaze is an offline-first desktop digital wellbeing, posture, and break-timer application. FocusGaze is built under the principles of **Privacy by Design and Privacy by Default** in compliance with:
+- The EU General Data Protection Regulation (GDPR - Regulation (EU) 2016/679)
+- The Nigeria Data Protection Act 2023 / Nigeria Data Protection Regulation (NDPA / NDPR)
+- Microsoft Store App Developer Agreement and Certification Policies (Section 10.5 - Personal Information & Privacy)
+
+**Core Promise:** FocusGaze operates 100% locally on your computer. We do not maintain user accounts, do not run remote tracking or analytics servers, and never transmit or store your camera images, video feeds, or biometric templates.
+
+---
+
+## 2. Information Handled by FocusGaze
+
+### A. Camera & Computer Vision Data (In-Memory Only)
+- **What it does:** With your explicit permission, FocusGaze uses your computer webcam to detect physical presence in front of the screen, estimate screen distance (to prevent eye strain), and detect posture slouching.
+- **How it is processed:** Frames are processed in real time entirely within your device's local memory (RAM) using on-device WebAssembly machine learning (MediaPipe BlazeFace). 
+- **Retention:** **Zero storage.** Raw video frames and images are immediately destroyed after presence calculation. No images or video recordings are ever written to your hard drive, cached, or transmitted over any network.
+- **Optional Primary User Identity Guard:** If you explicitly choose to "Enroll Face", a non-reversible mathematical landmark ratio vector is computed and stored locally in your device's application database to help lock your PC if an unauthorized user sits at your screen. This mathematical descriptor cannot be reversed into an image of your face and never leaves your PC. You can erase it at any time by clicking "Clear ID".
+
+### B. Mouse & Keyboard Activity (Fallback Mode)
+- **What it does:** When camera access is disabled, or when operating in "Input only" mode, FocusGaze queries standard operating system idle timers (Windows `GetLastInputInfo`) to determine whether you are actively working.
+- **Retention:** FocusGaze does NOT record keystrokes, does NOT log typed text, does NOT record mouse cursor positions, and does NOT take screen captures. Only the idle duration (seconds since last input) is checked to pause counters when you step away.
+
+### C. Productivity and Ergonomic Statistics (Stored Locally)
+- **What it does:** FocusGaze maintains your daily focus seconds, breaks completed, breaks skipped, and settings preferences in a local SQLite file stored strictly on your device.
+- **Retention:** You can customize data retention to 30 days, 90 days, 365 days, or indefinite. Data older than your chosen threshold is automatically purged locally.
+
+---
+
+## 3. Legal Bases for Processing
+Under GDPR (Article 6 & 9) and NDPA/NDPR (Section 25):
+- **Consent:** Camera access is requested through standard Windows permission dialogs and onboarding. You can revoke camera permission at any time in Windows Settings (`Settings > Privacy & security > Camera`) or within FocusGaze by choosing "Input only" mode.
+- **Legitimate Interest / User-Initiated Utility:** Local storage of focus time and break stats occurs exclusively on your machine to deliver the break timer and trend charts you configure.
+
+---
+
+## 4. Data Sharing and Third Parties
+- **Third-Party Disclosures:** None. We do not sell, rent, monetize, or share your data with advertisers, partners, or data brokers.
+- **Cloud Infrastructure & Telemetry:** FocusGaze contains no third-party tracking SDKs, no advertising libraries, and no cloud analytics.
+- **Network Access:** FocusGaze is designed to operate completely offline. Its internal Content Security Policy blocks external network transmissions (`connect-src 'self'`).
+
+---
+
+## 5. Your Rights and Controls (GDPR & NDPA Compliance)
+FocusGaze provides built-in tools in the Settings modal that allow you to exercise your rights immediately:
+- **Right to Access & Portability:** Export your entire local focus history anytime using the "Export JSON" or "Export CSV" buttons.
+- **Right to Erasure ("Right to be Forgotten"):** Click "Delete All Local Data" to immediately wipe your local database, settings, history, and facial signatures.
+- **Right to Restrict or Object:** Switch Tracking Mode to "Input only" to completely shut off camera access and optical processing.
+- **Revoke Biometric ID:** Click "Clear ID" to instantly delete the enrolled facial signature.
+
+---
+
+## 6. Children's Privacy
+FocusGaze is a general-purpose productivity tool that does not knowingly collect personal information from children under the age of 16. Because all processing is offline and on-device, no personal data from minors is gathered or stored externally.
+
+---
+
+## 7. Security Measures
+In accordance with GDPR Article 32 and NDPA Section 39:
+- All computer vision inference executes offline in isolated memory spaces.
+- The camera LED indicator on your Windows hardware illuminates whenever the camera is actively processing.
+- The app enforces an air-gapped webview security configuration to prevent unauthorized remote connections.
+
+---
+
+## 8. Supervisory Authorities and Contacts
+If you have questions about this Privacy Policy or wish to contact the developer:
+- **Email:** privacy@focusgaze.local
+- **EU / EEA Users:** You have the right to lodge a complaint with your national Data Protection Authority (EDPB: https://edpb.europa.eu/about-edpb/about-edpb/members_en).
+- **Nigeria Users:** You may contact the Nigeria Data Protection Commission (NDPC: https://ndpc.gov.ng / info@ndpc.gov.ng).
